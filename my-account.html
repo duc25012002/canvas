@@ -24,11 +24,15 @@
     <!-- responsive css -->
     <link rel="stylesheet" href="assets/css/responsive.css" />
 
-    <link href="assets/css/toastr.css" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/css/chatbot.css" />
 
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <!--[if lte IE 9]>
@@ -101,7 +105,11 @@
             <div class="col-lg-3 col-md-4 col-sm-4 col-12">
               <div class="logo">
                 <a href="index.html"
-                  ><img src="assets/img/logo/logo-sinrato.png" alt="brand-logo"
+                  ><img
+                    src="assets/img/logo/logo.jpg"
+                    alt="brand-logo"
+                    width="80px"
+                    height="80px"
                 /></a>
               </div>
             </div>
@@ -926,7 +934,11 @@
                           </button>
                         </li>
                         <li>
-                          <a class="nav-link" href="#" class="ctf-logout" id="logout-my-account"
+                          <a
+                            class="nav-link"
+                            href="#"
+                            class="ctf-logout"
+                            id="logout-my-account"
                             >logout</a
                           >
                         </li>
@@ -1307,7 +1319,79 @@
       <i class="fa fa-angle-up"></i>
     </div>
     <!-- /End Scroll to Top -->
+    <div class="modal fade" id="order_detail_view">
+      <div class="container">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Chi Tiết Đơn Hàng</h3>
+              <button type="button" class="close" data-bs-dismiss="modal">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="order-detail">
+                <div class="order-info">
+                  <p><strong>Mã đơn hàng:</strong> MB86P1733992878FI</p>
+                  <p><strong>Họ tên:</strong> Pham Thuong</p>
+                  <p><strong>Địa chỉ:</strong> 122a Thai Nguyen</p>
+                  <p><strong>Điện thoại:</strong> 0987654321</p>
+                  <p><strong>Ngày tạo:</strong> 08:41 12/12/2024</p>
+                  <p>
+                    <strong>Phương thức thanh toán:</strong> Thanh toán qua
+                    VNPAY
+                  </p>
+                  <p><strong>Trạng thái:</strong> Thành công</p>
+                  <p><strong>Ghi chú:</strong></p>
+                </div>
 
+                <h4>Chi Tiết Sản Phẩm</h4>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          iPhone 11 Chính hãng - Đã kích hoạt bảo hành VN/A (Màu
+                          Trắng)
+                        </td>
+                        <td>8,393,000 VND</td>
+                        <td>1</td>
+                        <td>8,393,000 VND</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="order-summary">
+                  <p><strong>Tổng giá trị đơn hàng:</strong> 8,393,000 VND</p>
+                </div>
+
+                <!-- <div class="user-info">
+                  <h4>Thông Tin Người Dùng</h4>
+                  <p><strong>Tên:</strong> Test</p>
+                  <p><strong>Email:</strong> test123@gmail.com</p>
+                  <p><strong>Điện thoại:</strong> 09728347777</p>
+                  <p><strong>Địa chỉ:</strong> TN</p>
+                  <img
+                    src="https://ui-avatars.com/api/?name=Test&background=random"
+                    alt="Avatar"
+                    class="user-avatar"
+                  />
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- footer area start -->
     <footer>
       <!-- news-letter area start -->
@@ -1497,15 +1581,15 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/ajax-mail.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="./chatbot/index.js" type="module"></script>
+    <!-- <script src="./chatbot/index.js" type="module"></script> -->
     <script src="assets/js/script.js"></script>
-    <script src="assets/js/toastr.js"></script>
     <script src="./API/api.js" type="module"></script>
-    <script src="./API/login.js" type="module"></script>
-    <script src="./API/logout.js" type="module"></script>
+    <script src="./API/ctf-login.js" type="module"></script>
+    <script src="./API/ctf-logout.js" type="module"></script>
     <script src="./API/products-all.js" type="module"></script>
     <script src="./API/brand.js" type="module"></script>
     <script src="./API/search.js" type="module"></script>
     <script src="./API/cart.js" type="module"></script>
+    <script src="./API/order.js" type="module"></script>
   </body>
 </html>

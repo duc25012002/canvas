@@ -3,8 +3,9 @@ import { API_CONFIG } from "./api.js";
 import { formatPrice } from "./products-all.js";
 import { token } from "./api.js";
 import { selectedProductId } from "./products-all.js";
-import { user_id } from "./login.js";
-
+import CTFAlert from "../assets/js/ctf-alert.js";
+const ctfAlert = new CTFAlert();
+export let user_id = localStorage.getItem("user_id");
 export let product_card_Id = null;
 export let totalAmount = 0;
 export let subTotal = 0;
@@ -19,16 +20,17 @@ export async function getUserCart() {
         Authorization: `Bearer ${token}`,
       }
     );
-    // toastr.success("Giỏ hàng đã được tải thành công.");
     return cartData.data;
   } catch (error) {
     if (error.message.includes("401")) {
-      toastr.warning("Người dùng chưa được xác thực.");
+      ctfAlert.alert_warning("Người dùng chưa được xác thực.");
     } else if (error.message === "Failed to fetch") {
-      // toastr.warning("Bạn chưa đăng nhập");
       console.log("Không thể tải lên giỏ hàng vì bạn chưa đăng nhập");
     } else {
-      toastr.error(error.message);
+      ctfAlert.alert_error(
+        "Không thể tải giỏ hàng. Vui lòng thử lại.",
+        error.message
+      );
     }
 
     return [];
@@ -51,12 +53,12 @@ export async function updateUserCart(userId, productVariantId, quantity) {
 
     if (updatedCart.message === "Cập nhật thành công!") {
       console.log(updatedCart.message);
-      toastr.success("Cập nhật giỏ hàng thành công!");
+      ctfAlert.alert_success_v2("Cập nhật giỏ hàng thành công!");
     } else {
-      toastr.warning(updatedCart.message);
+      ctfAlert.alert_warning(updatedCart.message);
     }
   } catch (error) {
-    toastr.error("Lỗi khi cập nhật giỏ hàng. Vui lòng thử lại.");
+    ctfAlert.alert_error("Lỗi khi cập nhật giỏ hàng. Vui lòng thử lại.");
     console.error("Lỗi khi cập nhật giỏ hàng:", error);
   }
 }
@@ -77,13 +79,15 @@ export async function addToCart(userId, productVariantId, quantity) {
 
     if (addToCart.message === "Cập nhật thành công!") {
       console.log(addToCart.message);
-      toastr.success("Thêm sản phẩm vào giỏ hàng thành công.");
+      ctfAlert.alert_success_v2("Thêm sản phẩm vào giỏ hàng thành công.");
     } else {
       console.log(addToCart.message);
-      toastr.warning(addToCart.message);
+      ctfAlert.alert_warning(addToCart.message);
     }
   } catch (error) {
-    toastr.error("Lỗi khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+    ctfAlert.alert_error(
+      "Lỗi khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại."
+    );
     console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
   }
 }
@@ -299,7 +303,7 @@ export async function loadAndRenderCart() {
     renderCartCheckout(cartItems);
     renderMiniCart(cartItems);
   } catch (error) {
-    toastr.error("Không thể tải giỏ hàng. Vui lòng thử lại.");
+    ctfAlert.alert_error("Không thể tải giỏ hàng. Vui lòng thử lại.");
     console.error("Lỗi khi lấy giỏ hàng:", error);
   }
 }

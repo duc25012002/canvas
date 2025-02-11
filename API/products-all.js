@@ -1,18 +1,15 @@
 import apiService from "./api.js";
 import { API_CONFIG } from "./api.js";
 import { token } from "./api.js";
-import { user_id } from "./ctf-login.js";
 import { updateUserCart } from "./cart.js";
 import { addToCart } from "./cart.js";
 import { fetchCategories } from "./brand.js";
 import { loadAndRenderCart } from "./cart.js";
-// import { handleAddToCart } from "./product-details.js";
-// import { renderStars } from "./product-details.js";
-// import { calculateAverageRating } from "./review.js";
-// import { fetchCategories, renderCategoryProducts } from "./brand.js";
+import CTFAlert from "../assets/js/ctf-alert.js";
+const ctfAlert = new CTFAlert();
 
+let user_id = localStorage.getItem("user_id");
 export let selectedProductId = localStorage.getItem("selectedProductId");
-
 export const formatPrice = (price) =>
   new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -22,21 +19,52 @@ export const formatPrice = (price) =>
 export async function fetchProductListALL() {
   try {
     const productAll = await apiService.get("/api/product-list");
-    // toastr.success("Danh sách sản phẩm đã được tải thành công!");
     console.log("Danh sách tất cả sản phẩm:", productAll.data);
     return productAll.data;
   } catch (error) {
-    // toastr.error("Lỗi khi lấy danh sách sản phẩm. Vui lòng thử lại sau.");
     console.error("Lỗi khi lấy danh sách sản phẩm:", error);
     return [];
   }
+}
+
+export function handleAddToCart(productId) {
+  const quantity =
+    parseInt(document.querySelector(".qty-boxx input").value) || 1;
+  if (!selectedProductId) {
+    ctfAlert.alert_error("Không có ID sản phẩm.");
+  } else if (!token) {
+    ctfAlert.alert_warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+    setTimeout(() => (window.location.href = "login.html"), 1500);
+  } else if (isNaN(quantity) || quantity <= 0) {
+    ctfAlert.alert_warning(
+      "Số lượng không hợp lệ. Vui lòng nhập số lượng lớn hơn 0."
+    );
+  } else {
+    addToCart(user_id, productId, quantity).then(loadAndRenderCart);
+  }
+}
+
+export function assignBtnAddToCartEvent() {
+  const buttons = document.querySelectorAll(".btn-cart");
+  buttons.forEach((button) => {
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+    newButton.addEventListener("click", (event) => {
+      const productId = newButton.getAttribute("data-product-id");
+      if (productId) {
+        handleAddToCart(productId);
+      } else {
+        console.warn("Không tìm thấy ID sản phẩm trên nút.");
+      }
+    });
+  });
 }
 
 function renderOurProduct(products, categories) {
   const container = document.querySelector("#tab_content_our_product");
 
   if (!container) {
-    console.error('Không tìm thấy phần tử với id "tab_content_our_product"');
+    // console.error('Không tìm thấy phần tử với id "tab_content_our_product"');
     return;
   }
 
@@ -152,30 +180,11 @@ function renderOurProduct(products, categories) {
       }
     });
   });
-
-  document.querySelectorAll(".btn-cart").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      if (!token) {
-        toastr.warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
-        setTimeout(() => {
-          window.location.href = "login.html";
-        }, 1500);
-        return;
-      }
-      const selectedProductId = button.getAttribute("data-product-id");
-      if (selectedProductId) {
-        addToCart(user_id, selectedProductId, 1);
-        loadAndRenderCart();
-      } else {
-        toastr.error("Không có ID sản phẩm.");
-        console.error("Không có ID sản phẩm.");
-      }
-    });
-  });
+  assignBtnAddToCartEvent();
 }
 
 // Hàm trích xuất dữ liệu sản phẩm
-function extractProductData(jsonData) {
+export function extractProductData(jsonData) {
   const products = [];
 
   jsonData.forEach((product) => {
@@ -273,9 +282,9 @@ function renderBrandSale(products) {
   );
 
   if (containers.length === 0) {
-    console.error(
-      "Không tìm thấy phần tử #tab-content-brand-sale .product-item"
-    );
+    // console.error(
+    //   "Không tìm thấy phần tử #tab-content-brand-sale .product-item"
+    // );
     return;
   }
 
@@ -371,25 +380,7 @@ function renderBrandSale(products) {
     });
   });
 
-  document.querySelectorAll(".btn-cart").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      if (!token) {
-        toastr.warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
-        setTimeout(() => {
-          window.location.href = "login.html";
-        }, 1500);
-        return;
-      }
-      const selectedProductId = button.getAttribute("data-product-id");
-      if (selectedProductId) {
-        addToCart(user_id, selectedProductId, 1);
-        loadAndRenderCart();
-      } else {
-        toastr.error("Không có ID sản phẩm.");
-        console.error("Không có ID sản phẩm.");
-      }
-    });
-  });
+  assignBtnAddToCartEvent();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

@@ -1,18 +1,20 @@
 import apiService from "./api.js";
 import { API_CONFIG } from "./api.js";
 import { token } from "./api.js";
-import { selectedProductId } from "./products-all.js";
 import { formatPrice } from "./products-all.js";
 import { updateUserCart } from "./cart.js";
 import { addToCart } from "./cart.js";
-import { user_id } from "./login.js";
 import { calculateAverageRating } from "./review.js";
 import { loadAndRenderCart } from "./cart.js";
+import CTFAlert from "../assets/js/ctf-alert.js";
+const ctfAlert = new CTFAlert();
 
 let variant_Index = 0;
+let selectedProductId = localStorage.getItem("selectedProductId");
+let user_id = localStorage.getItem("user_id");
 
 async function getProductDetail(productId) {
-  console.log("Lấy chi tiết sản phẩm với ID:", productId);
+  // console.log("Lấy chi tiết sản phẩm với ID:", productId);
   try {
     const productData = await apiService.get(
       `/api/product-detail/${productId}`,
@@ -57,7 +59,7 @@ export function renderStars(averageRating) {
 async function renderProductDetail(productData) {
   const productDetailContainer = document.getElementById("product-detail");
   if (!productDetailContainer || !productData) {
-    toastr.error("Dữ liệu sản phẩm không hợp lệ.");
+    ctfAlert.alert_error("Không thể lấy thông tin sản phẩm.");
     productDetailContainer.innerHTML = `<h4 style="text-align: center;">Không thể lấy thông tin sản phẩm.</h4>`;
     return;
   }
@@ -128,7 +130,7 @@ async function renderProductDetail(productData) {
         <div class="col-lg-7">
           <div class="product-details-inner">
             <div class="pro-details-name mb-10">
-              <h3>${title} - ${variant.rom.capacity} màu ${variant.color}</h3>
+              <h3>${title}</h3>
             </div>
             <div id="review-Card-Product" class="pro-details-review mb-20">
               <ul>
@@ -180,12 +182,15 @@ function handleAddToCart(productId) {
   const quantity =
     parseInt(document.querySelector(".qty-boxx input").value) || 1;
   if (!selectedProductId) {
-    toastr.error("Không có ID sản phẩm.");
+    console.error("Không có ID sản phẩm.");
+    ctfAlert.alert_error("Lỗi!!! Không thể thêm sản phẩm vào giỏ hàng.");
   } else if (!token) {
-    toastr.warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+    ctfAlert.alert_warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
     setTimeout(() => (window.location.href = "login.html"), 1500);
   } else if (isNaN(quantity) || quantity <= 0) {
-    toastr.warning("Số lượng không hợp lệ. Vui lòng nhập số lượng lớn hơn 0.");
+    ctfAlert.alert_warning(
+      "Số lượng không hợp lệ. Vui lòng nhập số lượng lớn hơn 0."
+    );
   } else {
     addToCart(user_id, productId, quantity);
     loadAndRenderCart();
@@ -205,5 +210,5 @@ if (selectedProductId) {
   getProductDetail(selectedProductId);
 } else {
   console.error("Không có ID sản phẩm được chọn.");
-  toastr.error("Không có ID sản phẩm được chọn.");
+  ctfAlert.alert_error("Lỗi!!!");
 }

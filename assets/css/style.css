@@ -60,8 +60,8 @@
 @import url("https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700,800,900");
 
 :root {
-  --primary-color: #7D472A;
-  --white-color: #ffffff
+  --primary-color: #7d472a;
+  --white-color: #ffffff;
 }
 
 body {
@@ -448,7 +448,6 @@ img,
 
 /*----Start header Middle css----*/
 
-
 .top-cat .nice-select {
   background: #f0f0f0;
   border: medium none;
@@ -483,7 +482,7 @@ input.top-cat-field {
 }
 
 .top-search-btn {
-  background: #7D472A none repeat scroll 0 0;
+  background: #7d472a none repeat scroll 0 0;
   border: medium none;
   border-radius: 0 6px 6px 0;
   color: #fff;
@@ -574,7 +573,7 @@ input.top-cat-field {
 }
 
 .mini-cart-option .count {
-  background: #7D472A;
+  background: #7d472a;
   border-radius: 50%;
   color: #fff;
   font-size: 11px;
@@ -735,7 +734,7 @@ a.cart-button.hm2 {
   transform-origin: top;
   opacity: 0;
   visibility: hidden;
-  border-bottom: 2px solid #7D472A;
+  border-bottom: 2px solid #7d472a;
   -webkit-box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
 }
@@ -767,7 +766,7 @@ ul.dropdown li span {
 }
 
 .main-menu ul li ul.dropdown li:hover > a {
-  color: #7D472A;
+  color: #7d472a;
 }
 
 .main-menu ul li ul.dropdown li ul.dropdown {
@@ -776,7 +775,7 @@ ul.dropdown li span {
   opacity: 0;
   visibility: hidden;
   position: absolute;
-  border-bottom: 2px solid #7D472A;
+  border-bottom: 2px solid #7d472a;
   -webkit-box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
 }
@@ -1361,7 +1360,7 @@ nav.m-style3 {
 }
 
 .feature-content h4 {
-  color: #7D472A;
+  color: #7d472a;
   font-size: 18px;
   line-height: 20px;
   margin-bottom: 5px;
@@ -2706,10 +2705,10 @@ a.shop-btn:hover {
 }
 
 .newsletter-btn {
-  background: #fedc19 none repeat scroll 0 0;
+  background: #7d472a none repeat scroll 0 0;
   border: medium none;
   border-radius: 0 5px 5px 0;
-  color: #111;
+  color: #fff;
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
@@ -4559,7 +4558,6 @@ label {
   cursor: pointer;
 }
 
-
 .login-form .pass-show-btn:hover,
 .login-form .pass-show-btn:focus {
   background: #333;
@@ -4754,7 +4752,7 @@ label {
 
 .slider-arrow-style.slick-slider .slick-arrow:hover {
   color: #ffffff;
-  background-color: #7D472A;
+  background-color: #7d472a;
 }
 
 .slider-arrow-style.slick-slider:hover .slick-arrow {
@@ -4788,9 +4786,9 @@ select.form-control {
   height: calc(2.25rem + 2px);
 }
 
-
 .zoom {
-  transition: transform .8s ease;
+  transition: transform 0.8s ease;
+  width: 100%;
 }
 
 .zoom:hover {
@@ -4798,5 +4796,5 @@ select.form-control {
 }
 
 .fa-color {
-  color: #7D472A
+  color: #7d472a;
 }

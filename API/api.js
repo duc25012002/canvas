@@ -1,3 +1,5 @@
+export let baseUrl = "https://mobile-store.id.vn";
+
 export const API_CONFIG = {
   baseURL: "https://mobile-store.id.vn",
   defaultHeaders: {

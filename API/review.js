@@ -1,6 +1,8 @@
 import apiService from "./api.js";
 import { selectedProductId } from "./products-all.js";
 import { token, API_CONFIG } from "./api.js";
+import CTFAlert from "../assets/js/ctf-alert.js";
+const ctfAlert = new CTFAlert();
 
 const handleApiError = (error, context = "") => {
   console.error(`Lỗi trong ${context}:`, error.message);
@@ -25,7 +27,7 @@ const getProductReviewsById = async (productId) => {
 const saveReview = async (productId, rating, comment) => {
   if (!productId || !rating || !comment) {
     console.error("Dữ liệu đánh giá không hợp lệ.");
-    toastr.error("Dữ liệu đánh giá không hợp lệ.", "Lỗi");
+    ctfAlert.alert_error("Dữ liệu đánh giá không hợp lệ.");
     return;
   }
 
@@ -38,7 +40,7 @@ const saveReview = async (productId, rating, comment) => {
       { Authorization: `Bearer ${token}` }
     );
     if (response.status === "success") {
-      toastr.success("Đánh giá của bạn đã được gửi thành công!", "Thành công");
+      ctfAlert.alert_success_v2("Đánh giá của bạn đã được gửi thành công!");
       return response;
     } else {
       throw new Error(response.message || "Không thể lưu đánh giá.");
@@ -127,7 +129,7 @@ if (elementReview_form) {
     event.preventDefault();
 
     if (!token) {
-      toastr.warning("Vui lòng đăng nhập trước khi gửi đánh giá!");
+      ctfAlert.alert_warning("Vui lòng đăng nhập trước khi gửi đánh giá!");
       setTimeout(() => {
         window.location.href = "login.html";
       }, 1000);
@@ -140,7 +142,7 @@ if (elementReview_form) {
     );
 
     if (!comment || !rating) {
-      toastr.warning("Vui lòng điền đầy đủ thông tin!");
+      ctfAlert.alert_warning("Vui lòng điền đầy đủ thông tin!");
       return;
     }
 
@@ -150,7 +152,7 @@ if (elementReview_form) {
       document.querySelector(".review-form").reset();
       updateReviews(selectedProductId);
     } catch (error) {
-      toastr.error(`Lỗi khi gửi đánh giá: ${error.message}`, "Lỗi");
+      ctfAlert.alert_error("Lỗi khi gửi đánh giá. Vui lòng thử lại!");
       console.error("Lỗi khi gửi đánh giá:", error.message);
     }
   });

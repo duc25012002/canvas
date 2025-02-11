@@ -1,5 +1,6 @@
 import apiService from "./api.js";
-
+import CTFAlert from "../assets/js/ctf-alert.js";
+const ctfAlert = new CTFAlert();
 document
   .querySelector(".btn.btn-secondary")
   .addEventListener("click", async function (event) {
@@ -23,11 +24,11 @@ document
       !password ||
       !confirmPassword
     ) {
-      toastr.error("Tất cả các trường là bắt buộc");
+      ctfAlert.alert_warning("Tất cả các thông tin là bắt buộc");
       return;
     }
     if (password !== confirmPassword) {
-      toastr.error("Mật khẩu không khớp");
+      ctfAlert.alert_error("Mật khẩu không khớp");
       return;
     }
 
@@ -47,18 +48,18 @@ document
       const result = await apiService.post("/api/user/register", data);
 
       if (result.status === "success") {
-        toastr.success("Đăng ký thành công");
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1000);
+        ctfAlert.alert_success("Đăng ký thành công");
+        // setTimeout(() => {
+        //   window.location.href = "index.html";
+        // }, 1000);
       } else {
-        toastr.error(result.message || "Đăng ký thất bại");
+        ctfAlert.alert_error(result.message || "Đăng ký thất bại");
         this.innerHTML = "Register";
         this.disabled = false;
       }
     } catch (error) {
       console.error("Error:", error);
-      toastr.error("Đăng ký thất bại");
+      ctfAlert.alert_error("Đăng ký thất bại");
     } finally {
       this.innerHTML = "Register";
       this.disabled = false;

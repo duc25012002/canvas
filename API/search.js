@@ -1,11 +1,13 @@
 import { API_CONFIG } from "./api.js";
 import { formatPrice } from "./products-all.js";
 import { token } from "./api.js";
-import { user_id } from "./login.js";
 import { addToCart } from "./cart.js";
 import { loadAndRenderCart } from "./cart.js";
 import { fetchProductListALL } from "./products-all.js";
+import CTFAlert from "../assets/js/ctf-alert.js";
+const ctfAlert = new CTFAlert();
 
+const user_id = localStorage.getItem("user_id");
 function filterByKeyword(
   products,
   keyword,
@@ -66,79 +68,6 @@ function filterByPrice(products, minPrice, maxPrice) {
   });
 }
 
-// async function searchProducts(
-//   products,
-//   keyword,
-//   minPrice,
-//   maxPrice,
-//   searchFields = ["title", "info", "category_name"]
-// ) {
-//   try {
-//     console.log("nhỏ", minPrice);
-//     console.log("lớn", maxPrice);
-
-//     const lowerCaseKeyword = keyword.toLowerCase();
-
-//     const filteredProducts = products.filter((product) => {
-//       const directFieldsMatch = searchFields.some(
-//         (field) =>
-//           product[field] &&
-//           product[field].toString().toLowerCase().includes(lowerCaseKeyword)
-//       );
-
-//       const specificationsMatch =
-//         product.specifications &&
-//         ["screen_type", "screen_resolution"].some(
-//           (field) =>
-//             product.specifications[field] &&
-//             product.specifications[field]
-//               .toString()
-//               .toLowerCase()
-//               .includes(lowerCaseKeyword)
-//         );
-
-//       const variantsMatch =
-//         product.variants &&
-//         product.variants.some(
-//           (variant) =>
-//             ["color", "price"].some(
-//               (field) =>
-//                 variant[field] &&
-//                 variant[field]
-//                   .toString()
-//                   .toLowerCase()
-//                   .includes(lowerCaseKeyword)
-//             ) ||
-//             (variant.rom &&
-//               variant.rom.capacity &&
-//               variant.rom.capacity
-//                 .toString()
-//                 .toLowerCase()
-//                 .includes(lowerCaseKeyword))
-//         );
-
-//       const priceInRange =
-//         product.variants &&
-//         product.variants.some(
-//           (variant) =>
-//             variant.price &&
-//             parseFloat(variant.price) >= minPrice &&
-//             parseFloat(variant.price) <= maxPrice
-//         );
-
-//       return (
-//         (directFieldsMatch || specificationsMatch || variantsMatch) &&
-//         priceInRange
-//       );
-//     });
-
-//     return filteredProducts;
-//   } catch (error) {
-//     console.error("Lỗi trong quá trình tìm kiếm sản phẩm:", error);
-//     return [];
-//   }
-// }
-
 async function handleSearchEvent(
   event,
   productList,
@@ -176,7 +105,9 @@ async function handleSearchEvent(
           "searchResults",
           JSON.stringify(filteredByPrice)
         );
-        toastr.success(`Tìm thấy ${filteredByPrice.length} sản phẩm phù hợp.`);
+        // ctfAlert.alert_success_v2(
+        //   `Tìm thấy ${filteredByPrice.length} sản phẩm phù hợp.`
+        // );
 
         const checkSearchWindow = document.getElementById("price-slider");
         if (!checkSearchWindow) {
@@ -187,11 +118,11 @@ async function handleSearchEvent(
           renderSearchResults(filteredByPrice);
         }
       } else {
-        toastr.warning("Không tìm thấy sản phẩm phù hợp!!!");
+        ctfAlert.alert_warning("Không tìm thấy sản phẩm phù hợp!!!");
         renderSearchResults(filteredByPrice);
       }
     } else {
-      toastr.info("Vui lòng nhập từ khóa để tìm kiếm.");
+      ctfAlert.alert_error("Vui lòng nhập từ khóa để tìm kiếm.");
     }
   }
 }
@@ -364,7 +295,9 @@ function renderSearchResults(searchResults) {
   document.querySelectorAll(".btn-cart").forEach((button) => {
     button.addEventListener("click", (event) => {
       if (!token) {
-        toastr.warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+        ctfAlert.alert_warning(
+          "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng."
+        );
         setTimeout(() => {
           window.location.href = "login.html";
         }, 1500);
@@ -375,7 +308,8 @@ function renderSearchResults(searchResults) {
         addToCart(user_id, selectedProductId, 1);
         loadAndRenderCart();
       } else {
-        toastr.error("Không có ID sản phẩm.");
+        ctfAlert.alert_error("Không có ID sản phẩm.");
+
         console.error("Không có ID sản phẩm.");
       }
     });
